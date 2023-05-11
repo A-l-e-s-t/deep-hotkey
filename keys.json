@@ -1,0 +1,1042 @@
+{
+  "virtual-key codes": [
+    {
+      "name": "VK_LBUTTON",
+      "numeric": "0x01",
+      "decimal": 1,
+      "description": "Left mouse button"
+    },
+    {
+      "name": "VK_RBUTTON",
+      "numeric": "0x02",
+      "decimal": 2,
+      "description": "Right mouse button"
+    },
+    {
+      "name": "VK_CANCEL",
+      "numeric": "0x03",
+      "decimal": 3,
+      "description": "Control-break processing"
+    },
+    {
+      "name": "VK_MBUTTON",
+      "numeric": "0x04",
+      "decimal": 4,
+      "description": "Middle mouse button (three-button mouse)"
+    },
+    {
+      "name": "VK_XBUTTON1",
+      "numeric": "0x05",
+      "decimal": 5,
+      "description": "X1 mouse button"
+    },
+    {
+      "name": "VK_XBUTTON2",
+      "numeric": "0x06",
+      "decimal": 6,
+      "description": "X2 mouse button"
+    },
+    {
+      "name": "VK_BACK",
+      "numeric": "0x08",
+      "decimal": 8,
+      "description": "BACKSPACE key"
+    },
+    {
+      "name": "VK_TAB",
+      "numeric": "0x09",
+      "decimal": 9,
+      "description": "TAB key"
+    },
+    {
+      "name": "VK_CLEAR",
+      "numeric": "0x0C",
+      "decimal": 12,
+      "description": "CLEAR key"
+    },
+    {
+      "name": "VK_RETURN",
+      "numeric": "0x0D",
+      "decimal": 13,
+      "description": "ENTER key"
+    },
+    {
+      "name": "VK_SHIFT",
+      "numeric": "0x10",
+      "decimal": 16,
+      "description": "SHIFT key"
+    },
+    {
+      "name": "VK_CONTROL",
+      "numeric": "0x11",
+      "decimal": 17,
+      "description": "CTRL key"
+    },
+    {
+      "name": "VK_MENU",
+      "numeric": "0x12",
+      "decimal": 18,
+      "description": "ALT key"
+    },
+    {
+      "name": "VK_PAUSE",
+      "numeric": "0x13",
+      "decimal": 19,
+      "description": "PAUSE key"
+    },
+    {
+      "name": "VK_CAPITAL",
+      "numeric": "0x14",
+      "decimal": 20,
+      "description": "CAPS LOCK key"
+    },
+    {
+      "name": "VK_KANA",
+      "numeric": "0x15",
+      "decimal": 21,
+      "description": "IME Kana mode"
+    },
+    {
+      "name": "VK_HANGUEL",
+      "numeric": "0x15",
+      "decimal": 21,
+      "description": "IME Hanguel mode (maintained for compatibility; use VK_HANGUL)"
+    },
+    {
+      "name": "VK_HANGUL",
+      "numeric": "0x15",
+      "decimal": 21,
+      "description": "IME Hangul mode"
+    },
+    {
+      "name": "VK_JUNJA",
+      "numeric": "0x17",
+      "decimal": 23,
+      "description": "IME Junja mode"
+    },
+    {
+      "name": "VK_FINAL",
+      "numeric": "0x18",
+      "decimal": 24,
+      "description": "IME final mode"
+    },
+    {
+      "name": "VK_HANJA",
+      "numeric": "0x19",
+      "decimal": 25,
+      "description": "IME Hanja mode"
+    },
+    {
+      "name": "VK_KANJI",
+      "numeric": "0x19",
+      "decimal": 25,
+      "description": "IME Kanji mode"
+    },
+    {
+      "name": "VK_ESCAPE",
+      "numeric": "0x1B",
+      "decimal": 27,
+      "description": "ESC key"
+    },
+    {
+      "name": "VK_CONVERT",
+      "numeric": "0x1C",
+      "decimal": 28,
+      "description": "IME convert"
+    },
+    {
+      "name": "VK_NONCONVERT",
+      "numeric": "0x1D",
+      "decimal": 29,
+      "description": "IME nonconvert"
+    },
+    {
+      "name": "VK_ACCEPT",
+      "numeric": "0x1E",
+      "decimal": 30,
+      "description": "IME accept"
+    },
+    {
+      "name": "VK_MODECHANGE",
+      "numeric": "0x1F",
+      "decimal": 31,
+      "description": "IME mode change request"
+    },
+    {
+      "name": "VK_SPACE",
+      "numeric": "0x20",
+      "decimal": 32,
+      "description": "SPACEBAR"
+    },
+    {
+      "name": "VK_PRIOR",
+      "numeric": "0x21",
+      "decimal": 33,
+      "description": "PAGE UP key"
+    },
+    {
+      "name": "VK_NEXT",
+      "numeric": "0x22",
+      "decimal": 34,
+      "description": "PAGE DOWN key"
+    },
+    {
+      "name": "VK_END",
+      "numeric": "0x23",
+      "decimal": 35,
+      "description": "END key"
+    },
+    {
+      "name": "VK_HOME",
+      "numeric": "0x24",
+      "decimal": 36,
+      "description": "HOME key"
+    },
+    {
+      "name": "VK_LEFT",
+      "numeric": "0x25",
+      "decimal": 37,
+      "description": "LEFT ARROW key"
+    },
+    {
+      "name": "VK_UP",
+      "numeric": "0x26",
+      "decimal": 38,
+      "description": "UP ARROW key"
+    },
+    {
+      "name": "VK_RIGHT",
+      "numeric": "0x27",
+      "decimal": 39,
+      "description": "RIGHT ARROW key"
+    },
+    {
+      "name": "VK_DOWN",
+      "numeric": "0x28",
+      "decimal": 40,
+      "description": "DOWN ARROW key"
+    },
+    {
+      "name": "VK_SELECT",
+      "numeric": "0x29",
+      "decimal": 41,
+      "description": "SELECT key"
+    },
+    {
+      "name": "VK_PRINT",
+      "numeric": "0x2A",
+      "decimal": 42,
+      "description": "PRINT key"
+    },
+    {
+      "name": "VK_EXECUTE",
+      "numeric": "0x2B",
+      "decimal": 43,
+      "description": "EXECUTE key"
+    },
+    {
+      "name": "VK_SNAPSHOT",
+      "numeric": "0x2C",
+      "decimal": 44,
+      "description": "PRINT SCREEN key"
+    },
+    {
+      "name": "VK_INSERT",
+      "numeric": "0x2D",
+      "decimal": 45,
+      "description": "INS key"
+    },
+    {
+      "name": "VK_DELETE",
+      "numeric": "0x2E",
+      "decimal": 46,
+      "description": "DEL key"
+    },
+    {
+      "name": "VK_HELP",
+      "numeric": "0x2F",
+      "decimal": 47,
+      "description": "HELP key"
+    },
+    {
+      "name": "VK_0",
+      "numeric": "0x30",
+      "decimal": 48,
+      "description": "0 key"
+    },
+    {
+      "name": "VK_1",
+      "numeric": "0x31",
+      "decimal": 49,
+      "description": "1 key"
+    },
+    {
+      "name": "VK_2",
+      "numeric": "0x32",
+      "decimal": 50,
+      "description": "2 key"
+    },
+    {
+      "name": "VK_3",
+      "numeric": "0x33",
+      "decimal": 51,
+      "description": "3 key"
+    },
+    {
+      "name": "VK_4",
+      "numeric": "0x34",
+      "decimal": 52,
+      "description": "4 key"
+    },
+    {
+      "name": "VK_5",
+      "numeric": "0x35",
+      "decimal": 53,
+      "description": "5 key"
+    },
+    {
+      "name": "VK_6",
+      "numeric": "0x36",
+      "decimal": 54,
+      "description": "6 key"
+    },
+    {
+      "name": "VK_7",
+      "numeric": "0x37",
+      "decimal": 55,
+      "description": "7 key"
+    },
+    {
+      "name": "VK_8",
+      "numeric": "0x38",
+      "decimal": 56,
+      "description": "8 key"
+    },
+    {
+      "name": "VK_9",
+      "numeric": "0x39",
+      "decimal": 57,
+      "description": "9 key"
+    },
+    {
+      "name": "VK_A",
+      "numeric": "0x41",
+      "decimal": 65,
+      "description": "A key"
+    },
+    {
+      "name": "VK_B",
+      "numeric": "0x42",
+      "decimal": 66,
+      "description": "B key"
+    },
+    {
+      "name": "VK_C",
+      "numeric": "0x43",
+      "decimal": 67,
+      "description": "C key"
+    },
+    {
+      "name": "VK_D",
+      "numeric": "0x44",
+      "decimal": 68,
+      "description": "D key"
+    },
+    {
+      "name": "VK_E",
+      "numeric": "0x45",
+      "decimal": 69,
+      "description": "E key"
+    },
+    {
+      "name": "VK_F",
+      "numeric": "0x46",
+      "decimal": 70,
+      "description": "F key"
+    },
+    {
+      "name": "VK_G",
+      "numeric": "0x47",
+      "decimal": 71,
+      "description": "G key"
+    },
+    {
+      "name": "VK_H",
+      "numeric": "0x48",
+      "decimal": 72,
+      "description": "H key"
+    },
+    {
+      "name": "VK_I",
+      "numeric": "0x49",
+      "decimal": 73,
+      "description": "I key"
+    },
+    {
+      "name": "VK_J",
+      "numeric": "0x4A",
+      "decimal": 74,
+      "description": "J key"
+    },
+    {
+      "name": "VK_K",
+      "numeric": "0x4B",
+      "decimal": 75,
+      "description": "K key"
+    },
+    {
+      "name": "VK_L",
+      "numeric": "0x4C",
+      "decimal": 76,
+      "description": "L key"
+    },
+    {
+      "name": "VK_M",
+      "numeric": "0x4D",
+      "decimal": 77,
+      "description": "M key"
+    },
+    {
+      "name": "VK_N",
+      "numeric": "0x4E",
+      "decimal": 78,
+      "description": "N key"
+    },
+    {
+      "name": "VK_O",
+      "numeric": "0x4F",
+      "decimal": 79,
+      "description": "O key"
+    },
+    {
+      "name": "VK_P",
+      "numeric": "0x50",
+      "decimal": 80,
+      "description": "P key"
+    },
+    {
+      "name": "VK_Q",
+      "numeric": "0x51",
+      "decimal": 81,
+      "description": "Q key"
+    },
+    {
+      "name": "VK_R",
+      "numeric": "0x52",
+      "decimal": 82,
+      "description": "R key"
+    },
+    {
+      "name": "VK_S",
+      "numeric": "0x53",
+      "decimal": 83,
+      "description": "S key"
+    },
+    {
+      "name": "VK_T",
+      "numeric": "0x54",
+      "decimal": 84,
+      "description": "T key"
+    },
+    {
+      "name": "VK_U",
+      "numeric": "0x55",
+      "decimal": 85,
+      "description": "U key"
+    },
+    {
+      "name": "VK_V",
+      "numeric": "0x56",
+      "decimal": 86,
+      "description": "V key"
+    },
+    {
+      "name": "VK_W",
+      "numeric": "0x57",
+      "decimal": 87,
+      "description": "W key"
+    },
+    {
+      "name": "VK_X",
+      "numeric": "0x58",
+      "decimal": 88,
+      "description": "X key"
+    },
+    {
+      "name": "VK_Y",
+      "numeric": "0x59",
+      "decimal": 89,
+      "description": "Y key"
+    },
+    {
+      "name": "VK_Z",
+      "numeric": "0x5A",
+      "decimal": 90,
+      "description": "Z key"
+    },
+    {
+      "name": "VK_LWIN",
+      "numeric": "0x5B",
+      "decimal": 91,
+      "description": "Left Windows key (Natural keyboard)"
+    },
+    {
+      "name": "VK_RWIN",
+      "numeric": "0x5C",
+      "decimal": 92,
+      "description": "Right Windows key (Natural keyboard)"
+    },
+    {
+      "name": "VK_APPS",
+      "numeric": "0x5D",
+      "decimal": 93,
+      "description": "Applications key (Natural keyboard)"
+    },
+    {
+      "name": "VK_SLEEP",
+      "numeric": "0x5F",
+      "decimal": 95,
+      "description": "Computer Sleep key"
+    },
+    {
+      "name": "VK_NUMPAD0",
+      "numeric": "0x60",
+      "decimal": 96,
+      "description": "Numeric keypad 0 key"
+    },
+    {
+      "name": "VK_NUMPAD1",
+      "numeric": "0x61",
+      "decimal": 97,
+      "description": "Numeric keypad 1 key"
+    },
+    {
+      "name": "VK_NUMPAD2",
+      "numeric": "0x62",
+      "decimal": 98,
+      "description": "Numeric keypad 2 key"
+    },
+    {
+      "name": "VK_NUMPAD3",
+      "numeric": "0x63",
+      "decimal": 99,
+      "description": "Numeric keypad 3 key"
+    },
+    {
+      "name": "VK_NUMPAD4",
+      "numeric": "0x64",
+      "decimal": 100,
+      "description": "Numeric keypad 4 key"
+    },
+    {
+      "name": "VK_NUMPAD5",
+      "numeric": "0x65",
+      "decimal": 101,
+      "description": "Numeric keypad 5 key"
+    },
+    {
+      "name": "VK_NUMPAD6",
+      "numeric": "0x66",
+      "decimal": 102,
+      "description": "Numeric keypad 6 key"
+    },
+    {
+      "name": "VK_NUMPAD7",
+      "numeric": "0x67",
+      "decimal": 103,
+      "description": "Numeric keypad 7 key"
+    },
+    {
+      "name": "VK_NUMPAD8",
+      "numeric": "0x68",
+      "decimal": 104,
+      "description": "Numeric keypad 8 key"
+    },
+    {
+      "name": "VK_NUMPAD9",
+      "numeric": "0x69",
+      "decimal": 105,
+      "description": "Numeric keypad 9 key"
+    },
+    {
+      "name": "VK_MULTIPLY",
+      "numeric": "0x6A",
+      "decimal": 106,
+      "description": "Multiply key"
+    },
+    {
+      "name": "VK_ADD",
+      "numeric": "0x6B",
+      "decimal": 107,
+      "description": "Add key"
+    },
+    {
+      "name": "VK_SEPARATOR",
+      "numeric": "0x6C",
+      "decimal": 108,
+      "description": "Separator key"
+    },
+    {
+      "name": "VK_SUBTRACT",
+      "numeric": "0x6D",
+      "decimal": 109,
+      "description": "Subtract key"
+    },
+    {
+      "name": "VK_DECIMAL",
+      "numeric": "0x6E",
+      "decimal": 110,
+      "description": "Decimal key"
+    },
+    {
+      "name": "VK_DIVIDE",
+      "numeric": "0x6F",
+      "decimal": 111,
+      "description": "Divide key"
+    },
+    {
+      "name": "VK_F1",
+      "numeric": "0x70",
+      "decimal": 112,
+      "description": "F1 key"
+    },
+    {
+      "name": "VK_F2",
+      "numeric": "0x71",
+      "decimal": 113,
+      "description": "F2 key"
+    },
+    {
+      "name": "VK_F3",
+      "numeric": "0x72",
+      "decimal": 114,
+      "description": "F3 key"
+    },
+    {
+      "name": "VK_F4",
+      "numeric": "0x73",
+      "decimal": 115,
+      "description": "F4 key"
+    },
+    {
+      "name": "VK_F5",
+      "numeric": "0x74",
+      "decimal": 116,
+      "description": "F5 key"
+    },
+    {
+      "name": "VK_F6",
+      "numeric": "0x75",
+      "decimal": 117,
+      "description": "F6 key"
+    },
+    {
+      "name": "VK_F7",
+      "numeric": "0x76",
+      "decimal": 118,
+      "description": "F7 key"
+    },
+    {
+      "name": "VK_F8",
+      "numeric": "0x77",
+      "decimal": 119,
+      "description": "F8 key"
+    },
+    {
+      "name": "VK_F9",
+      "numeric": "0x78",
+      "decimal": 120,
+      "description": "F9 key"
+    },
+    {
+      "name": "VK_F10",
+      "numeric": "0x79",
+      "decimal": 121,
+      "description": "F10 key"
+    },
+    {
+      "name": "VK_F11",
+      "numeric": "0x7A",
+      "decimal": 122,
+      "description": "F11 key"
+    },
+    {
+      "name": "VK_F12",
+      "numeric": "0x7B",
+      "decimal": 123,
+      "description": "F12 key"
+    },
+    {
+      "name": "VK_F13",
+      "numeric": "0x7C",
+      "decimal": 124,
+      "description": "F13 key"
+    },
+    {
+      "name": "VK_F14",
+      "numeric": "0x7D",
+      "decimal": 125,
+      "description": "F14 key"
+    },
+    {
+      "name": "VK_F15",
+      "numeric": "0x7E",
+      "decimal": 126,
+      "description": "F15 key"
+    },
+    {
+      "name": "VK_F16",
+      "numeric": "0x7F",
+      "decimal": 127,
+      "description": "F16 key"
+    },
+    {
+      "name": "VK_F17",
+      "numeric": "0x80",
+      "decimal": 128,
+      "description": "F17 key"
+    },
+    {
+      "name": "VK_F18",
+      "numeric": "0x81",
+      "decimal": 129,
+      "description": "F18 key"
+    },
+    {
+      "name": "VK_F19",
+      "numeric": "0x82",
+      "decimal": 130,
+      "description": "F19 key"
+    },
+    {
+      "name": "VK_F20",
+      "numeric": "0x83",
+      "decimal": 131,
+      "description": "F20 key"
+    },
+    {
+      "name": "VK_F21",
+      "numeric": "0x84",
+      "decimal": 132,
+      "description": "F21 key"
+    },
+    {
+      "name": "VK_F22",
+      "numeric": "0x85",
+      "decimal": 133,
+      "description": "F22 key"
+    },
+    {
+      "name": "VK_F23",
+      "numeric": "0x86",
+      "decimal": 134,
+      "description": "F23 key"
+    },
+    {
+      "name": "VK_F24",
+      "numeric": "0x87",
+      "decimal": 135,
+      "description": "F24 key"
+    },
+    {
+      "name": "VK_NUMLOCK",
+      "numeric": "0x90",
+      "decimal": 144,
+      "description": "NUM LOCK key"
+    },
+    {
+      "name": "VK_SCROLL",
+      "numeric": "0x91",
+      "decimal": 145,
+      "description": "SCROLL LOCK key"
+    },
+    {
+      "name": "VK_LSHIFT",
+      "numeric": "0xA0",
+      "decimal": 160,
+      "description": "Left SHIFT key"
+    },
+    {
+      "name": "VK_RSHIFT",
+      "numeric": "0xA1",
+      "decimal": 161,
+      "description": "Right SHIFT key"
+    },
+    {
+      "name": "VK_LCONTROL",
+      "numeric": "0xA2",
+      "decimal": 162,
+      "description": "Left CONTROL key"
+    },
+    {
+      "name": "VK_RCONTROL",
+      "numeric": "0xA3",
+      "decimal": 163,
+      "description": "Right CONTROL key"
+    },
+    {
+      "name": "VK_LMENU",
+      "numeric": "0xA4",
+      "decimal": 164,
+      "description": "Left MENU key"
+    },
+    {
+      "name": "VK_RMENU",
+      "numeric": "0xA5",
+      "decimal": 165,
+      "description": "Right MENU key"
+    },
+    {
+      "name": "VK_BROWSER_BACK",
+      "numeric": "0xA6",
+      "decimal": 166,
+      "description": "Windows 2000/XP: Browser Back key"
+    },
+    {
+      "name": "VK_BROWSER_FORWARD",
+      "numeric": "0xA7",
+      "decimal": 167,
+      "description": "Windows 2000/XP: Browser Forward key"
+    },
+    {
+      "name": "VK_BROWSER_REFRESH",
+      "numeric": "0xA8",
+      "decimal": 168,
+      "description": "Windows 2000/XP: Browser Refresh key"
+    },
+    {
+      "name": "VK_BROWSER_STOP",
+      "numeric": "0xA9",
+      "decimal": 169,
+      "description": "Windows 2000/XP: Browser Stop key"
+    },
+    {
+      "name": "VK_BROWSER_SEARCH",
+      "numeric": "0xAA",
+      "decimal": 170,
+      "description": "Windows 2000/XP: Browser Search key"
+    },
+    {
+      "name": "VK_BROWSER_FAVORITES",
+      "numeric": "0xAB",
+      "decimal": 171,
+      "description": "Windows 2000/XP: Browser Favorites key"
+    },
+    {
+      "name": "VK_BROWSER_HOME",
+      "numeric": "0xAC",
+      "decimal": 172,
+      "description": "Windows 2000/XP: Browser Start and Home key"
+    },
+    {
+      "name": "VK_VOLUME_MUTE",
+      "numeric": "0xAD",
+      "decimal": 173,
+      "description": "Windows 2000/XP: Volume Mute key"
+    },
+    {
+      "name": "VK_VOLUME_DOWN",
+      "numeric": "0xAE",
+      "decimal": 174,
+      "description": "Windows 2000/XP: Volume Down key"
+    },
+    {
+      "name": "VK_VOLUME_UP",
+      "numeric": "0xAF",
+      "decimal": 175,
+      "description": "Windows 2000/XP: Volume Up key"
+    },
+    {
+      "name": "VK_MEDIA_NEXT_TRACK",
+      "numeric": "0xB0",
+      "decimal": 176,
+      "description": "Windows 2000/XP: Next Track key"
+    },
+    {
+      "name": "VK_MEDIA_PREV_TRACK",
+      "numeric": "0xB1",
+      "decimal": 177,
+      "description": "Windows 2000/XP: Previous Track key"
+    },
+    {
+      "name": "VK_MEDIA_STOP",
+      "numeric": "0xB2",
+      "decimal": 178,
+      "description": "Windows 2000/XP: Stop Media key"
+    },
+    {
+      "name": "VK_MEDIA_PLAY_PAUSE",
+      "numeric": "0xB3",
+      "decimal": 179,
+      "description": "Windows 2000/XP: Play/Pause Media key"
+    },
+    {
+      "name": "VK_LAUNCH_MAIL",
+      "numeric": "0xB4",
+      "decimal": 180,
+      "description": "Windows 2000/XP: Start Mail key"
+    },
+    {
+      "name": "VK_LAUNCH_MEDIA_SELECT",
+      "numeric": "0xB5",
+      "decimal": 181,
+      "description": "Windows 2000/XP: Select Media key"
+    },
+    {
+      "name": "VK_LAUNCH_APP1",
+      "numeric": "0xB6",
+      "decimal": 182,
+      "description": "Windows 2000/XP: Start Application 1 key"
+    },
+    {
+      "name": "VK_LAUNCH_APP2",
+      "numeric": "0xB7",
+      "decimal": 183,
+      "description": "Windows 2000/XP: Start Application 2 key"
+    },
+    {
+      "name": "VK_OEM_1",
+      "numeric": "0xBA",
+      "decimal": 186,
+      "description": "Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ';:' key"
+    },
+    {
+      "name": "VK_OEM_PLUS",
+      "numeric": "0xBB",
+      "decimal": 187,
+      "description": "For any country/region, the '+' key"
+    },
+    {
+      "name": "VK_OEM_COMMA",
+      "numeric": "0xBC",
+      "decimal": 188,
+      "description": "For any country/region, the ',' key"
+    },
+    {
+      "name": "VK_OEM_MINUS",
+      "numeric": "0xBD",
+      "decimal": 189,
+      "description": "For any country/region, the '-' key"
+    },
+    {
+      "name": "VK_OEM_PERIOD",
+      "numeric": "0xBE",
+      "decimal": 190,
+      "description": "For any country/region, the '.' key"
+    },
+    {
+      "name": "VK_OEM_2",
+      "numeric": "0xBF",
+      "decimal": 191,
+      "description": "Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '/?' key"
+    },
+    {
+      "name": "VK_OEM_3",
+      "numeric": "0xC0",
+      "decimal": 192,
+      "description": "Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '`~' key"
+    },
+    {
+      "name": "VK_OEM_4",
+      "numeric": "0xDB",
+      "decimal": 219,
+      "description": "Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '[{' key"
+    },
+    {
+      "name": "VK_OEM_5",
+      "numeric": "0xDC",
+      "decimal": 220,
+      "description": "Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '\\|' key"
+    },
+    {
+      "name": "VK_OEM_6",
+      "numeric": "0xDD",
+      "decimal": 221,
+      "description": "Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ']}' key"
+    },
+    {
+      "name": "VK_OEM_7",
+      "numeric": "0xDE",
+      "decimal": 222,
+      "description": "Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the 'single-quote/double-quote' key"
+    },
+    {
+      "name": "VK_OEM_8",
+      "numeric": "0xDF",
+      "decimal": 223,
+      "description": "Used for miscellaneous characters; it can vary by keyboard."
+    },
+    {
+      "name": "VK_OEM_102",
+      "numeric": "0xE2",
+      "decimal": 226,
+      "description": "Windows 2000/XP: Either the angle bracket key or the backslash key on the RT 102-key keyboard"
+    },
+    {
+      "name": "VK_PROCESSKEY",
+      "numeric": "0xE5",
+      "decimal": 229,
+      "description": "Windows 95/98/Me, Windows NT 4.0, Windows 2000/XP: IME PROCESS key"
+    },
+    {
+      "name": "VK_PACKET",
+      "numeric": "0xE7",
+      "decimal": 231,
+      "description": "Windows 2000/XP: Used to pass Unicode characters as if they were keystrokes. The VK_PACKET key is the low word of a 32-bit Virtual Key value used for non-keyboard input methods."
+    },
+    {
+      "name": "VK_ATTN",
+      "numeric": "0xF6",
+      "decimal": 246,
+      "description": "Attn key"
+    },
+    {
+      "name": "VK_CRSEL",
+      "numeric": "0xF7",
+      "decimal": 247,
+      "description": "CrSel key"
+    },
+    {
+      "name": "VK_EXSEL",
+      "numeric": "0xF8",
+      "decimal": 248,
+      "description": "ExSel key"
+    },
+    {
+      "name": "VK_EREOF",
+      "numeric": "0xF9",
+      "decimal": 249,
+      "description": "Erase EOF key"
+    },
+    {
+      "name": "VK_PLAY",
+      "numeric": "0xFA",
+      "decimal": 250,
+      "description": "Play key"
+    },
+    {
+      "name": "VK_ZOOM",
+      "numeric": "0xFB",
+      "decimal": 251,
+      "description": "Zoom key"
+    },
+    {
+      "name": "VK_NONAME",
+      "numeric": "0xFC",
+      "decimal": 252,
+      "description": "Reserved"
+    },
+    {
+      "name": "VK_PA1",
+      "numeric": "0xFD",
+      "decimal": 253,
+      "description": "PA1 key"
+    },
+    {
+      "name": "VK_OEM_CLEAR",
+      "numeric": "0xFE",
+      "decimal": 254,
+      "description": "Clear key"
+    }
+  ]
+}
