@@ -153,15 +153,19 @@ class Hotkey:
 
 			# if hotkey is triggered for the first time
 			if state and not self.hotkeys[hotkey]["triggered"]:
-				print(f'Hotkey "{hotkey}" is set as triggered, hotkey: {self.hotkeys[hotkey]}, prsd_keys: {self.prsd_keys_name}')
+				print(
+					f'Hotkey "{hotkey}" is set as triggered, hotkey: {self.hotkeys[hotkey]}, prsd_keys: {self.prsd_keys_name}')
 				self.hotkeys[hotkey]["triggered"] = True
 				self.hotkeys[hotkey]["trigger_time"] = self.time_now
-				if not self.hotkeys[hotkey]["on_release"] and self.hotkeys[hotkey]["triggered_for"] < self.hotkeys[hotkey]["timeout"]:
+				if not self.hotkeys[hotkey]["on_release"] and self.hotkeys[hotkey]["triggered_for"] < \
+						self.hotkeys[hotkey]["timeout"]:
 					self.hotkeys[hotkey]["trigger_callback"] = True
 			# if not triggered for the first time
 			elif not state and self.hotkeys[hotkey]["triggered"]:
-				print(f'Hotkey "{hotkey}" is set as untriggered, hotkey: {self.hotkeys[hotkey]}, prsd_keys: {self.prsd_keys_name}')
-				if self.hotkeys[hotkey]["on_release"] and self.hotkeys[hotkey]["triggered_for"] < self.hotkeys[hotkey]["timeout"]:
+				print(
+					f'Hotkey "{hotkey}" is set as untriggered, hotkey: {self.hotkeys[hotkey]}, prsd_keys: {self.prsd_keys_name}')
+				if self.hotkeys[hotkey]["on_release"] and self.hotkeys[hotkey]["triggered_for"] < self.hotkeys[hotkey][
+					"timeout"]:
 					self.hotkeys[hotkey]["trigger_callback"] = True
 				self._untrigger_hotkey(hotkey)
 
@@ -180,7 +184,6 @@ class Hotkey:
 					self.hotkeys[hotkey]["callback"]()
 				elif self.hotkeys[hotkey]["thread"] == 'new':
 					threading.Thread(target=self.hotkeys[hotkey]["callback"]).start()
-
 
 	def update_manual_hotkeys(self, hotkeys=None):
 		"""
@@ -313,7 +316,7 @@ class Hotkey:
 			# filter out arguments in given_args that are not in defaults
 			given_args = {k: v for k, v in locals().items() if k in defaults}
 			given_args = dict(sorted(given_args.items()))
-			
+
 			for arg in defaults:
 				if given_args[arg] != defaults[arg]:
 					self.hotkeys[name][arg] = given_args[arg]
