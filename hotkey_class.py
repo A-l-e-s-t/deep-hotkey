@@ -1,10 +1,10 @@
-# from . import config as c
 import time
 import ctypes
 import threading
 import json
 import os
 import inspect
+import logging
 
 
 class Hotkey:
@@ -12,7 +12,7 @@ class Hotkey:
 	This class is used to listen to keys and execute functions when hotkeys are pressed
 	"""
 
-	def __init__(self):
+	def __init__(self, log_lvl='CRITICAL'):
 		# config
 		self.listener_ticks = -1  # -1 to skip first loop iteration
 		self.last_prsd_keys = []  # last pressed keys
@@ -21,6 +21,8 @@ class Hotkey:
 		self.hotkeys = {}  # all hotkeys with their data
 		self.listen_delay = 0.01  # delay between all keys check
 		self.print_prsd_keys = False  # print pressed keys
+
+		logging.basicConfig(level=log_lvl, format='%(module)s:%(funcName)s:%(message)s')
 
 		"""
 		List of Virtual Key Codes: https://cherrytree.at/misc/vk.htm
@@ -67,7 +69,6 @@ class Hotkey:
 			self.time_now = time.time()
 
 			self._handle_keys()
-
 			# skip first loop iteration, because ctypes detects previously pressed keys
 			if self.listener_ticks < 0:
 				continue
@@ -115,75 +116,119 @@ class Hotkey:
 
 	def _handle_hotkeys(self):
 		for hotkey in self.hotkeys.keys():
-			wanted = self.hotkeys[hotkey]["wanted"]
-			unwanted = self.hotkeys[hotkey]["unwanted"]
-			order = self.hotkeys[hotkey]["order"]
+			hotkey_dict = self.hotkeys[hotkey]
+			wanted = hotkey_dict["wanted"]
+			unwanted = hotkey_dict["unwanted"]
+			order = hotkey_dict["order"]
 
 			# check if wanted keys are pressed including order
 			if order:
 				if unwanted is None:
 					# check if wanted keys are pressed in the same order
-					state = wanted == [key for key in self.prsd_keys_name if wanted[0] in self.prsd_keys_name and
-					                   wanted[-1] in self.prsd_keys_name and
-					                   self.prsd_keys_name.index(wanted[0]) <= self.prsd_keys_name.index(
-						key) <= self.prsd_keys_name.index(wanted[-1])]
+					state = wanted == [
+						key for key in self.prsd_keys_name if wanted[0] in self.prsd_keys_name
+                        and wanted[-1] in self.prsd_keys_name
+                        and self.prsd_keys_name.index(wanted[0])
+                        <= self.prsd_keys_name.index(key)
+                        <= self.prsd_keys_name.index(wanted[-1])
+					]
 				elif unwanted == 'all':
 					# check if wanted keys are pressed in order and all unwanted keys are not pressed
 					state = wanted == self.prsd_keys_name
 				else:
 					# check if wanted keys are pressed in order and unwanted keys are not pressed
-					state = (wanted[0] in self.prsd_keys_name and wanted[-1] in self.prsd_keys_name and
-					         all(self.prsd_keys_name.index(wanted[0]) <= self.prsd_keys_name.index(
-						         key) <= self.prsd_keys_name.index(
-						         wanted[-1]) for key in self.prsd_keys_name)
-					         ) and not any(key in self.prsd_keys_name for key in unwanted)
+					state = (
+						wanted[0] in self.prsd_keys_name and wanted[-1] in self.prsd_keys_name
+						and all(
+							self.prsd_keys_name.index(wanted[0])
+							<= self.prsd_keys_name.index(key)
+							<= self.prsd_keys_name.index(wanted[-1]) for key in self.prsd_keys_name
+						)
+					) and not any(key in self.prsd_keys_name for key in unwanted)
 			else:
 				if unwanted is None:
 					# check if wanted keys are pressed
 					state = all(key in self.prsd_keys_name for key in wanted)
 				elif unwanted == 'all':
-					state = all(key in self.prsd_keys_name for key in wanted) and not any(
-						key not in wanted or key in self.keys_dec for key in self.prsd_keys_name)
+					state = all(key in self.prsd_keys_name for key in wanted) \
+					        and not any(key not in wanted or key in self.keys_dec for key in self.prsd_keys_name)
 				else:
 					# check if wanted keys are pressed and unwanted keys are not pressed
 					state = all(key in self.prsd_keys_name for key in wanted) and not any(
 						key in self.prsd_keys_name for key in unwanted)
 
-			# print(f'state: {state}, self.prsd_keys_name: {self.prsd_keys_name}, wanted: {wanted}, unwanted: {unwanted}, order: {order}')
+			logging.debug(f'state: {state}, self.prsd_keys_name: {self.prsd_keys_name}, wanted: {wanted}, unwanted: {unwanted}, order: {order}')
+			logging.info(f'Hotkey "{hotkey}" state: {state}, triggered: {hotkey_dict["triggered"]}')
 
 			# if hotkey is triggered for the first time
-			if state and not self.hotkeys[hotkey]["triggered"]:
-				print(
-					f'Hotkey "{hotkey}" is set as triggered, hotkey: {self.hotkeys[hotkey]}, prsd_keys: {self.prsd_keys_name}')
-				self.hotkeys[hotkey]["triggered"] = True
-				self.hotkeys[hotkey]["trigger_time"] = self.time_now
-				if not self.hotkeys[hotkey]["on_release"] and self.hotkeys[hotkey]["triggered_for"] < \
-						self.hotkeys[hotkey]["timeout"]:
-					self.hotkeys[hotkey]["trigger_callback"] = True
+			if state and not hotkey_dict["triggered"]:
+				if hotkey_dict["toggle"]:
+					if not hotkey_dict["switched"]:
+						hotkey_dict["triggered"] = True
+						hotkey_dict["trigger_time"] = self.time_now
+						if hotkey_dict["triggered_for"] < hotkey_dict["timeout"]:
+							logging.info(f'Hotkey "{hotkey}" is set as triggered, hotkey: {hotkey_dict}, prsd_keys: {self.prsd_keys_name}')
+							if hotkey_dict["on_press_callback"]:
+								hotkey_dict["trigger_on_press_callback"] = True
+					else:
+						if hotkey_dict["triggered_for"] < hotkey_dict["timeout"]:
+							logging.info(f'Hotkey "{hotkey}" is set as untriggered, hotkey: {hotkey_dict}, prsd_keys: {self.prsd_keys_name}')
+							if hotkey_dict["on_release_callback"]:
+								hotkey_dict["trigger_on_release_callback"] = True
+								self._untrigger_hotkey(hotkey)
+
+					hotkey_dict["switched"] = not hotkey_dict["switched"]
+				else:
+					logging.info(f'Hotkey "{hotkey}" is set as triggered, hotkey: {hotkey_dict}, prsd_keys: {self.prsd_keys_name}')
+					hotkey_dict["triggered"] = True
+					hotkey_dict["trigger_time"] = self.time_now
+					if hotkey_dict["on_press_callback"] and hotkey_dict["triggered_for"] < \
+							hotkey_dict["timeout"]:
+						hotkey_dict["trigger_on_press_callback"] = True
+
+
 			# if not triggered for the first time
-			elif not state and self.hotkeys[hotkey]["triggered"]:
-				print(
-					f'Hotkey "{hotkey}" is set as untriggered, hotkey: {self.hotkeys[hotkey]}, prsd_keys: {self.prsd_keys_name}')
-				if self.hotkeys[hotkey]["on_release"] and self.hotkeys[hotkey]["triggered_for"] < self.hotkeys[hotkey][
-					"timeout"]:
-					self.hotkeys[hotkey]["trigger_callback"] = True
+			elif not state and hotkey_dict["triggered"]:
+				if hotkey_dict["toggle"]:
+					pass
+				else:
+					logging.info(f'Hotkey "{hotkey}" is set as untriggered, hotkey: {hotkey_dict}, prsd_keys: {self.prsd_keys_name}')
+					if hotkey_dict["on_release_callback"] and \
+							hotkey_dict["triggered_for"] < hotkey_dict["timeout"]:
+						hotkey_dict["trigger_on_release_callback"] = True
 				self._untrigger_hotkey(hotkey)
 
 	def _auto_update_hotkeys(self):
 		for hotkey in self.hotkeys.keys():
-			if self.hotkeys[hotkey]["triggered"] and self.hotkeys[hotkey]["active"]:
-				self.hotkeys[hotkey]["triggered_for"] = self.time_now - self.hotkeys[hotkey]["trigger_time"]
-				if self.hotkeys[hotkey]["triggered_for"] > self.hotkeys[hotkey]["timeout"]:
-					self._untrigger_hotkey(hotkey)
-					self.hotkeys[hotkey]["trigger_callback"] = False
+			hotkey_dict = self.hotkeys[hotkey]
 
-			if self.hotkeys[hotkey]["trigger_callback"] and self.hotkeys[hotkey]["thread"] != 'main':
-				print(f'Calling callback for hotkey "{self.hotkeys[hotkey]}"')
-				self.hotkeys[hotkey]["trigger_callback"] = False
-				if self.hotkeys[hotkey]["thread"] == 'run':
-					self.hotkeys[hotkey]["callback"]()
-				elif self.hotkeys[hotkey]["thread"] == 'new':
-					threading.Thread(target=self.hotkeys[hotkey]["callback"]).start()
+			if not hotkey_dict["active"]:
+				continue
+
+			if hotkey_dict["triggered"]:
+				hotkey_dict["triggered_for"] = self.time_now - hotkey_dict["trigger_time"]
+				if hotkey_dict["triggered_for"] > hotkey_dict["timeout"]:
+					self._untrigger_hotkey(hotkey)
+					hotkey_dict["trigger_on_press_callback"] = False
+					hotkey_dict["trigger_on_release_callback"] = False
+
+			if hotkey_dict["thread"] == 'main':
+				continue
+
+			if hotkey_dict["trigger_on_press_callback"]:
+				logging.info(f'Calling auto on_press_callback for hotkey "{hotkey_dict}"')
+				hotkey_dict["trigger_on_press_callback"] = False
+				if hotkey_dict["thread"] == 'dhk':
+					hotkey_dict["on_press_callback"]()
+				elif hotkey_dict["thread"] == 'new':
+					threading.Thread(target=hotkey_dict["on_press_callback"]).start()
+			elif hotkey_dict["trigger_on_release_callback"]:
+				logging.info(f'Calling auto on_release_callback for hotkey "{hotkey_dict}"')
+				hotkey_dict["trigger_on_release_callback"] = False
+				if hotkey_dict["thread"] == 'dhk':
+					hotkey_dict["on_release_callback"]()
+				elif hotkey_dict["thread"] == 'new':
+					threading.Thread(target=hotkey_dict["on_release_callback"]).start()
 
 	def update_manual_hotkeys(self, hotkeys=None):
 		"""
@@ -198,15 +243,22 @@ class Hotkey:
 			raise ValueError('Hotkeys must be list or tuple')
 
 		for hotkey in hotkeys:
+			hotkey_dict = self.hotkeys[hotkey]
+
+			# do check because hotkey to update can be set manually, so it can be not in self.hotkeys
 			if hotkey not in self.hotkeys:
 				raise ValueError(f'Hotkey "{hotkey}" not found')
-			elif not self.hotkeys[hotkey]["active"] or self.hotkeys[hotkey]["thread"] != 'main':
+			elif not hotkey_dict["active"] or hotkey_dict["thread"] != 'main':
 				continue
 
-			if self.hotkeys[hotkey]["trigger_callback"]:
-				print(f'Calling callback for hotkey "{self.hotkeys[hotkey]}"')
-				self.hotkeys[hotkey]["trigger_callback"] = False
-				self.hotkeys[hotkey]["callback"]()
+			if hotkey_dict["trigger_on_press_callback"]:
+				logging.info(f'Calling manual on_press_callback for hotkey "{hotkey_dict}"')
+				hotkey_dict["trigger_on_press_callback"] = False
+				hotkey_dict["on_press_callback"]()
+			elif hotkey_dict["trigger_on_release_callback"]:
+				logging.info(f'Calling manual on_release_callback for hotkey "{hotkey_dict}"')
+				hotkey_dict["trigger_on_release_callback"] = False
+				hotkey_dict["on_release_callback"]()
 
 	def _find_subset(self, value, data, by_type=None):
 		"""
@@ -278,29 +330,39 @@ class Hotkey:
 					raise ValueError(f'Key "{key}" is not found in keys database')
 		return arg
 
-	def set_hotkey(self, name, wanted=None, unwanted=None, callback=None, order=False,
-	               on_release=False, timeout=None, thread='main', active=True):
+	def set_hotkey(self, name, wanted=None, unwanted=None, on_press_callback=None, on_release_callback=None,
+	               toggle=False, order=False, timeout=None, thread='new', active=True):
 		"""
 		Add hotkey to hotkeys dict
 		:param name: name of hotkey
 		:param wanted: list of wanted keys that must be pressed to trigger hotkey
 		:param unwanted: list of unwanted keys, if 'all', all keys are unwanted
+		:param on_press_callback: callback to call when hotkey is triggered
+		:param on_release_callback: callback to call when hotkey is untriggered
+		:param toggle: if True, hotkey will call callback in switch mode, else as button
 		:param order: if True, wanted keys must be pressed in order
-		:param on_release: if True, hotkey is triggered on key release
 		:param timeout: timeout in seconds, if None, infinite timeout
-		:param callback: function to call when hotkey is triggered
-		:param thread: thread to call callback in: 'main', 'run', 'new'
-		:param active: if True, hotkey is active
-		:param triggered: if True, hotkey is triggered
+		:param thread: thread to call callback in: 'main', 'dhk', 'new'
+		:param active: if True, hotkey can be triggered
+
+		For on_press_callback and on_release_callback use lambda
+
+		If thread is set to "main", to execute callback you need to call
+		update_manual_hotkeys() in your main loop, thread "dhk" will call
+		callback in DHK's main loop, thread "new" will call callback in
+		new thread
+
+		Timeouts start counting when hotkey is triggered, when timeout is
+		reached, hotkey is untriggered even if wanted keys are still pressed
 		"""
 
 		if not isinstance(wanted, (list, tuple)):
 			raise ValueError('Wanted keys must be list or tuple')
 
-		if timeout in [None, False, -1]:
+		if timeout in (None, False, -1):
 			timeout = float('inf')
 
-		if name in ['all', '*']:
+		if name in ('all', '*'):
 			raise ValueError('Hotkey name can not be "all" or "*"')
 		elif not isinstance(name, str):
 			raise ValueError('Hotkey name must be string')
@@ -313,31 +375,33 @@ class Hotkey:
 			argspec = inspect.getfullargspec(self.set_hotkey)
 			defaults = dict(zip(argspec.args[::-1], argspec.defaults[::-1]))
 			default_args = dict(sorted(defaults.items()))
-			# filter out arguments in given_args that are not in defaults
-			given_args = {k: v for k, v in locals().items() if k in defaults}
+			given_args = {k: v for k, v in locals().items() if k in defaults}  # filter
 			given_args = dict(sorted(given_args.items()))
 
 			for arg in defaults:
 				if given_args[arg] != defaults[arg]:
 					self.hotkeys[name][arg] = given_args[arg]
-					print(f'Updating "{arg}" for hotkey "{name}"')
+					logging.info(f'Updating "{arg}" for hotkey "{name}"')
 		else:
 			self.hotkeys[name] = {
 				'wanted': wanted,
 				'unwanted': unwanted,
 				'order': order,
-				'on_release': on_release,
-				'timeout': timeout,  # counting when hotkey is triggered
-				'callback': callback,  # use lambda
+				'on_press_callback': on_press_callback,
+				'on_release_callback': on_release_callback,
+				'toggle': toggle,
+				'timeout': timeout,
 				'thread': thread,
 				'active': active,
+				'switched': False,  # only for toggle hotkeys, like capslock
 				'trigger_time': 0,  # self.time_now
 				'triggered_for': 0,  # self.time_now - self.hotkeys[name]["trigger_time"]
 				'triggered': False,  # conditions: trigger_condition, timeout
-				'trigger_callback': False  # True only when triggers for first time
+				'trigger_on_press_callback': False,  # True only when triggers for first time
+				'trigger_on_release_callback': False  # True only when triggers for first time
 			}
 
 	def _untrigger_hotkey(self, name):
-		print(f'_untrigger_hotkey: {name}')
+		logging.info(f'_untrigger_hotkey: {name}')
 		self.hotkeys[name]["triggered"] = False
 		self.hotkeys[name]["trigger_time"] = 0
