@@ -12,7 +12,7 @@ class Hotkey:
 	This class is used to listen to keys and execute functions when hotkeys are pressed
 	"""
 
-	def __init__(self, log_lvl='CRITICAL'):
+	def __init__(self):
 		# config
 		self.listener_ticks = -1  # -1 to skip first loop iteration
 		self.last_prsd_keys = []  # last pressed keys
@@ -22,7 +22,7 @@ class Hotkey:
 		self.listen_delay = 0.01  # delay between all keys check
 		self.print_prsd_keys = False  # print pressed keys
 
-		logging.basicConfig(level=log_lvl, format='%(module)s:%(funcName)s:%(message)s')
+		logging.basicConfig(level='CRITICAL', format='%(module)s:%(funcName)s:%(message)s')
 
 		"""
 		List of Virtual Key Codes: https://cherrytree.at/misc/vk.htm
@@ -47,6 +47,24 @@ class Hotkey:
 
 		# release key RETURN to avoid possible unwanted key presses
 		ctypes.windll.user32.keybd_event(0x13, 0, 2, 0)
+
+	def set_logging_level(self, level):
+		"""
+		Set logging level
+		:param level: logging level
+
+		Levels:
+		[CRITICAL] - 50;
+		[ERROR] - 40;
+		[WARNING] - 30;
+		[INFO] - 20;
+		[DEBUG] - 10;
+		[NOTSET] - 0.
+
+		Levels can be set using numbers or strings
+		"""
+
+		logging.getLogger().setLevel(level)
 
 	def start(self):
 		self.thread = threading.Thread(target=self.run)
@@ -186,7 +204,6 @@ class Hotkey:
 							hotkey_dict["timeout"]:
 						hotkey_dict["trigger_on_press_callback"] = True
 
-
 			# if not triggered for the first time
 			elif not state and hotkey_dict["triggered"]:
 				if hotkey_dict["toggle"]:
@@ -265,6 +282,7 @@ class Hotkey:
 		Find subset of dict in list of dicts
 		:param value: value to find
 		:param data: list of dicts
+		:param by_type: type of value to find, can be 'name', 'numeric', 'decimal', 'description'
 		:return: found dict, else False
 		"""
 
@@ -292,7 +310,7 @@ class Hotkey:
 
 		return False
 
-	def rename(self, arg, to_type='name'):
+	def _rename(self, arg, to_type='name'):
 		"""
 		Rename keys in given list to their names from keys database
 		:param arg: list of keys to rename
@@ -367,8 +385,8 @@ class Hotkey:
 		elif not isinstance(name, str):
 			raise ValueError('Hotkey name must be string')
 
-		wanted = self.rename(wanted)
-		unwanted = self.rename(unwanted)
+		wanted = self._rename(wanted)
+		unwanted = self._rename(unwanted)
 
 		# overwriting new arguments
 		if name in self.hotkeys.keys():
