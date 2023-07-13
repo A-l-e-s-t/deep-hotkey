@@ -7,20 +7,53 @@ import inspect
 import logging
 
 
+"""
+Bugs to fix:
+- when triggering hotkey, it's on_released_callback is triggered with delay
+"""
+
+
 class Hotkey:
 	"""
 	This class is used to listen to keys and execute functions when hotkeys are pressed
+
+	Example:
+		def on_hotkey_1():
+			print('hotkey 1 pressed')
+
+		def on_hotkey_2():
+			print('hotkey 2 pressed')
+
+		hotkey = Hotkey()
+		hotkey.set_hotkey(
+			['CTRL', 'A'],
+			on_press_callback=lambda: on_hotkey_1(),
+			on_release_callback=lambda: print('hotkey 1 released')
+		)
 	"""
 
 	def __init__(self):
+		"""
+		:param listener_ticks: how many times listener should be called
+		:param last_prsd_keys: list of pressed keys
+		:param prsd_keys: list of pressed keys
+		:param stop_listening: if True, listener will stop listening
+		:param hotkeys: dict of all hotkeys with their data
+		:param listen_delay: delay between all keys check (in seconds)
+		:param manual_hotkeys_timeouts: if hotkey is triggered, but update_manual_hotkeys() is not called in time, hotkey will be ignored (in seconds)
+		:param print_prsd_keys: print pressed keys
+		"""
+
 		# config
 		self.listener_ticks = -1  # -1 to skip first loop iteration
-		self.last_prsd_keys = []  # last pressed keys
+		self.last_prsd_keys = []
 		self.prsd_keys = []  # pressed keys
 		self.stop_listening = True
 		self.hotkeys = {}  # all hotkeys with their data
-		self.listen_delay = 0.01  # delay between all keys check
+		self.listen_delay = 0.01  # (sec) delay between all keys check
+		self.manual_hotkeys_timeout = 1  # (sec) if hotkey is triggered, but update_manual_hotkeys() is not called in time, hotkey will be ignored
 		self.print_prsd_keys = False  # print pressed keys
+		self.custom_class = False
 
 		logging.basicConfig(level='CRITICAL', format='%(module)s:%(funcName)s:%(message)s')
 
@@ -66,7 +99,16 @@ class Hotkey:
 
 		logging.getLogger().setLevel(level)
 
+	def set_custom(self, custom_class):
+		"""
+		Set custom class
+		:param custom_class: custom class
+		"""
+
+		self.custom_class = custom_class
+
 	def start(self):
+		stop_event = threading.Event()
 		self.thread = threading.Thread(target=self.run)
 		self.stop_listening = False
 		self.thread.start()
@@ -172,13 +214,16 @@ class Hotkey:
 					        and not any(key not in wanted or key in self.keys_dec for key in self.prsd_keys_name)
 				else:
 					# check if wanted keys are pressed and unwanted keys are not pressed
-					state = all(key in self.prsd_keys_name for key in wanted) and not any(
-						key in self.prsd_keys_name for key in unwanted)
+					state = all(key in self.prsd_keys_name for key in wanted) and \
+							not any(key in self.prsd_keys_name for key in unwanted)
 
 			logging.debug(f'state: {state}, self.prsd_keys_name: {self.prsd_keys_name}, wanted: {wanted}, unwanted: {unwanted}, order: {order}')
 			logging.info(f'Hotkey "{hotkey}" state: {state}, triggered: {hotkey_dict["triggered"]}')
 
-			# if hotkey is triggered for the first time
+			if not self._check_requirements(hotkey_dict["requirements"]):
+				continue
+
+			# if hotkey is triggered for the first time and all bools in requirements are True
 			if state and not hotkey_dict["triggered"]:
 				if hotkey_dict["toggle"]:
 					if not hotkey_dict["switched"]:
@@ -202,6 +247,7 @@ class Hotkey:
 					hotkey_dict["trigger_time"] = self.time_now
 					if hotkey_dict["on_press_callback"] and hotkey_dict["triggered_for"] < \
 							hotkey_dict["timeout"]:
+						print(f'Hotkey "{hotkey}", triggered_for: {hotkey_dict["triggered_for"]}, timeout: {hotkey_dict["timeout"]}')
 						hotkey_dict["trigger_on_press_callback"] = True
 
 			# if not triggered for the first time
@@ -223,13 +269,20 @@ class Hotkey:
 				continue
 
 			if hotkey_dict["triggered"]:
+				# print(f'Hotkey "{hotkey}" is triggered, time_now: {self.time_now}, trigger_time: {hotkey_dict["trigger_time"]}, triggered_for: {hotkey_dict["triggered_for"]}, timeout: {hotkey_dict["timeout"]}')
 				hotkey_dict["triggered_for"] = self.time_now - hotkey_dict["trigger_time"]
-				if hotkey_dict["triggered_for"] > hotkey_dict["timeout"]:
+				if hotkey_dict["triggered_for"] > hotkey_dict["timeout"] or not self._check_requirements(hotkey_dict["requirements"]):
+					# print(f'Hotkey "{hotkey}" is set as untriggered because of timeout, triggered_for: {hotkey_dict["triggered_for"]}, timeout: {hotkey_dict["timeout"]}')
 					self._untrigger_hotkey(hotkey)
 					hotkey_dict["trigger_on_press_callback"] = False
 					hotkey_dict["trigger_on_release_callback"] = False
 
 			if hotkey_dict["thread"] == 'main':
+				# if self.time_now - hotkey_dict["trigger_time"] > hotkey_dict["timeout"]:
+				# 	print(f'Hotkey "{hotkey}" is set as untriggered because of maual timeout, triggered_for: {hotkey_dict["triggered_for"]}, timeout: {hotkey_dict["timeout"]}')
+				# 	self._untrigger_hotkey(hotkey)
+				# 	hotkey_dict["trigger_on_press_callback"] = False
+				# 	hotkey_dict["trigger_on_release_callback"] = False
 				continue
 
 			if hotkey_dict["trigger_on_press_callback"]:
@@ -259,6 +312,7 @@ class Hotkey:
 		elif not isinstance(hotkeys, (list, tuple)):
 			raise ValueError('Hotkeys must be list or tuple')
 
+		called_hotkeys = []
 		for hotkey in hotkeys:
 			hotkey_dict = self.hotkeys[hotkey]
 
@@ -269,13 +323,17 @@ class Hotkey:
 				continue
 
 			if hotkey_dict["trigger_on_press_callback"]:
+				called_hotkeys.append(hotkey)
 				logging.info(f'Calling manual on_press_callback for hotkey "{hotkey_dict}"')
 				hotkey_dict["trigger_on_press_callback"] = False
 				hotkey_dict["on_press_callback"]()
 			elif hotkey_dict["trigger_on_release_callback"]:
+				called_hotkeys.append(hotkey)
 				logging.info(f'Calling manual on_release_callback for hotkey "{hotkey_dict}"')
 				hotkey_dict["trigger_on_release_callback"] = False
 				hotkey_dict["on_release_callback"]()
+
+		return called_hotkeys
 
 	def _find_subset(self, value, data, by_type=None):
 		"""
@@ -349,7 +407,7 @@ class Hotkey:
 		return arg
 
 	def set_hotkey(self, name, wanted=None, unwanted=None, on_press_callback=None, on_release_callback=None,
-	               toggle=False, order=False, timeout=None, thread='new', active=True):
+	               toggle=False, order=False, requirements=None, timeout=None, thread='new', active=True):
 		"""
 		Add hotkey to hotkeys dict
 		:param name: name of hotkey
@@ -359,6 +417,7 @@ class Hotkey:
 		:param on_release_callback: callback to call when hotkey is untriggered
 		:param toggle: if True, hotkey will call callback in switch mode, else as button
 		:param order: if True, wanted keys must be pressed in order
+		:param requirements: list of variables that must be True to trigger hotkey
 		:param timeout: timeout in seconds, if None, infinite timeout
 		:param thread: thread to call callback in: 'main', 'dhk', 'new'
 		:param active: if True, hotkey can be triggered
@@ -404,9 +463,10 @@ class Hotkey:
 			self.hotkeys[name] = {
 				'wanted': wanted,
 				'unwanted': unwanted,
-				'order': order,
 				'on_press_callback': on_press_callback,
 				'on_release_callback': on_release_callback,
+				'order': order,
+				'requirements': requirements,
 				'toggle': toggle,
 				'timeout': timeout,
 				'thread': thread,
@@ -418,6 +478,20 @@ class Hotkey:
 				'trigger_on_press_callback': False,  # True only when triggers for first time
 				'trigger_on_release_callback': False  # True only when triggers for first time
 			}
+
+	def _check_requirements(self, requirements):
+		if requirements is None:
+			return True
+
+		dict_requirements = {}
+		for key in requirements:
+			if key in self.custom_class.__dict__:
+				dict_requirements[key] = self.custom_class.__dict__[key]
+			elif key in self.hotkeys.keys():
+				dict_requirements[key] = self.hotkeys[key]["triggered"]
+			else:
+				dict_requirements[key] = False
+		return all(dict_requirements.values())
 
 	def _untrigger_hotkey(self, name):
 		logging.info(f'_untrigger_hotkey: {name}')
